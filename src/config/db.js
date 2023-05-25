@@ -8,7 +8,7 @@ const configDatabase = {
     connectionString: process.env.DATABASE_URL
 };
 
-console.log('Data Base Connected...');
+console.log(`Data Base Connected...`);
 
 if(process.env.MODE === "prod") configDatabase.ssl = true;
 

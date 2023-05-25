@@ -10,22 +10,31 @@ async function createCidade(nome, estado_id){
 
 async function getCidades(nome){
 
-    const select = `SELECT "Hoteis".nome as "Hospedagens",
-                        "Companhia".nome as "Companhia",
-                        "Passagens".data_saida as "Data_de_saida",
-                        "Passagens".hora_saida as "Horário_de_saida",
-                        "Passagens".data_chegada as "Data_de_chegada",
-                        "Passagens".hora_chegada as "Horário_previsto_de_chegada",
-                        "Passagens".valor as "Preço_por_passagem"
-                    FROM "Rotas"
-                    JOIN "Cidades" ON "Rotas".destino = "Cidades".id
-                    JOIN "Hoteis" ON "Cidades".id = "Hoteis".cidade_id
-                    JOIN "Passagens" ON "Rotas".id = "Passagens".rota_id
-                    JOIN "Companhia" ON "Passagens".companhia_id = "Companhia".id
-                    WHERE "Cidades".nome = $1`;
-    const { rows } = await db.query(select, [nome]);
+    const selectHoteis =   `SELECT "Hoteis".nome, "Hoteis".diaria FROM "Hoteis"
+                            JOIN "Cidades" ON "Hoteis".cidade_id = "Cidades".id
+                            WHERE "Cidades".nome = $1;`;
+    const hoteis = await db.query(selectHoteis, [nome]);
 
-    return rows[0];
+    const selectPassagens = `SELECT 	"Companhia".nome AS "Companhia",
+                                "Passagens".data_saida AS "Data_de_saida",
+                                "Passagens".hora_saida AS "Horário_de_saida",
+                                "Passagens".data_chegada AS "Data_de_chegada",
+                                "Passagens".hora_chegada AS "Horário_previsto_de_chegada",
+                                "Passagens".valor AS "Preço_por_passagem",
+                                "Cidades".nome AS "Local_de_Partida"
+                            FROM "Cidades", "Rotas"
+                            JOIN "Passagens" ON "Rotas".id = "Passagens".rota_id
+                            JOIN "Companhia" ON "Passagens".companhia_id = "Companhia".id
+                            WHERE "Cidades".nome != $1
+                                AND ("Cidades".id = "Rotas".origem) 
+                                AND ("Rotas".destino = (SELECT "Cidades".id FROM "Cidades" 
+                                                        WHERE "Cidades".nome = $1 )
+                                    )`;
+    const passagens = await db.query(selectPassagens, [nome]);
+
+    const Lista = {Hoteis: hoteis.rows, Passagens: passagens.rows};
+
+    return Lista;
 }
 
 export {

@@ -8,8 +8,11 @@ app.use(cors());
 app.use(express.json());
 
 // imports
+import home from './routes/homeRoute.js';
 
 
+// routes
+app.use(home);
 
 
 app.listen(process.env.PORT, () => {
