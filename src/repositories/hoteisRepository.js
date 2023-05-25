@@ -9,6 +9,15 @@ async function createHoteis(nome, endereco, descricao, diaria, disponiveis, cida
     return rows[0];
 }
 
+async function getHoteis(nome){
+
+    const select = ``;
+    const hoteis = await db.query(select, [nome]);
+
+    return hoteis.rows;
+}
+
 export {
-    createHoteis
+    createHoteis,
+    getHoteis
 }
