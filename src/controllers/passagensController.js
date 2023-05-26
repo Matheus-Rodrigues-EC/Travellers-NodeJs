@@ -1,4 +1,4 @@
-import { getPassagens } from "../repositories/passagensRepository.js";
+import { getPassagens, getPassagemId } from "../repositories/passagensRepository.js";
 
 async function getPassagemCidade(req, res){
     const {cidade} = req.params;
@@ -10,6 +10,17 @@ async function getPassagemCidade(req, res){
     }
 }
 
+async function getPassagem(req, res){
+    const {cidade, id} = req.params;
+    try{
+        const passagem = await getPassagemId(id, cidade);
+        res.status(200).send(passagem);
+    }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+
 export{ 
-    getPassagemCidade
+    getPassagemCidade,
+    getPassagem
 }
