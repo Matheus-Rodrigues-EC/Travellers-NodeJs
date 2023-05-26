@@ -1,5 +1,6 @@
 import { db } from './../config/db.js';
 
+// Adiciona uma cidade ao banco
 async function createCidade(nome, estado_id){
 
     const insert = `INSERT INTO "Cidades" (nome, estado_id)
@@ -8,7 +9,17 @@ async function createCidade(nome, estado_id){
     return rows[0];
 }
 
-async function getCidades(nome){
+// Faz uma busca de todas as cidades
+async function getCidades(){
+
+    const select = `SELECT "Cidades".nome, "Estados".sigla FROM "Cidades"
+                    JOIN "Estados" ON "Cidades".estado_id = "Estados".id`
+    const { rows } = await db.query(select);
+    return rows;
+}
+
+// Busca Hospedagens e Passagens para a cidade selecionada
+async function getAll(nome){
 
     const selectHoteis =   `SELECT "Hoteis".nome, "Hoteis".diaria FROM "Hoteis"
                             JOIN "Cidades" ON "Hoteis".cidade_id = "Cidades".id
@@ -39,5 +50,6 @@ async function getCidades(nome){
 
 export {
     createCidade,
-    getCidades
+    getCidades,
+    getAll
 };

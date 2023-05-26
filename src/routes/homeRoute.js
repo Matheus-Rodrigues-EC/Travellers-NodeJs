@@ -5,8 +5,9 @@ const home = express();
 home.use(cors());
 home.use(express.json());
 
-import { Exibir } from '../controllers/homeController.js';
+import { All, cidades } from '../controllers/homeController.js';
 
-home.get('/home', Exibir);
+home.get('/home', cidades);
+home.get('/home/:cidade', All)
 
 export default home;

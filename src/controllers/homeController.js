@@ -1,9 +1,18 @@
-import { getCidades } from "../repositories/cidadesRepository.js";
+import { getAll, getCidades } from "../repositories/cidadesRepository.js";
 
-async function Exibir(req, res){
-    const {nome} = req.body;
+async function cidades(req, res){
     try{
-        const cidades = await getCidades(nome);
+        const cidades = await getCidades();
+        res.status(200).send(cidades);
+    }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+
+async function All(req, res){
+    const {cidade} = req.params;
+    try{
+        const cidades = await getAll(cidade);
         res.status(200).send(cidades);
     }catch(error){
         res.status(500).send(error.message);
@@ -11,5 +20,6 @@ async function Exibir(req, res){
 }
 
 export {
-    Exibir
+    cidades,
+    All
 }
