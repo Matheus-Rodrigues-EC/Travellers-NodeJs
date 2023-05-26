@@ -24,7 +24,7 @@ async function getPassagens(cidade){
                     WHERE "Cidades".nome != $1 
                         AND ("Cidades".id = "Rotas".origem) 
                         AND ("Rotas".destino = (SELECT "Cidades".id FROM "Cidades" 
-                                                WHERE "Cidades".nome = $1 )
+                                                WHERE "Cidades".nome ILIKE $1 )
                             )`;
     const passagens = await db.query(select, [cidade]);
 

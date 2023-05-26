@@ -9,15 +9,38 @@ async function createHoteis(nome, endereco, descricao, diaria, disponiveis, cida
     return rows[0];
 }
 
-async function getHoteis(nome){
+// Buscar hotel por nome do hotel
+async function getHotel(nome){
 
-    const select = ``;
-    const hoteis = await db.query(select, [nome]);
+    const selectDados =    `SELECT "Hoteis".* FROM "Hoteis"
+                            WHERE "Hoteis".nome ILIKE $1;`;
+    const dados = await db.query(selectDados, [nome]);
+
+    const selectComodidades =  `SELECT "Comodidades".comodidade FROM "Hoteis"
+                                JOIN "Cidades" ON "Hoteis".cidade_id = "Cidades".id
+                                JOIN "Lista_Comodidade" ON "Hoteis".id = "Lista_Comodidade".hotel_id
+                                JOIN "Comodidades" ON "Lista_Comodidade".comodidade_id = "Comodidades".id
+                                WHERE "Hoteis".nome ILIKE $1;`;
+    const comodidades = await db.query(selectComodidades, [nome]);
+
+    const hoteis = {Dados: dados.rows, Comodidades: comodidades.rows};
+
+    return hoteis;
+}
+
+async function getHoteis(cidade){
+
+    const selectHoteis =   `SELECT "Hoteis".nome, "Hoteis".diaria FROM "Hoteis"
+                            JOIN "Cidades" ON "Hoteis".cidade_id = "Cidades".id
+                            WHERE "Cidades".nome ILIKE $1`
+    const hoteis = await db.query(selectHoteis, [cidade]);
 
     return hoteis.rows;
 }
 
+
 export {
     createHoteis,
+    getHotel,
     getHoteis
 }

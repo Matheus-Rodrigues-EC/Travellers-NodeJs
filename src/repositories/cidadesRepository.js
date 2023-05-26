@@ -12,7 +12,7 @@ async function getCidades(nome){
 
     const selectHoteis =   `SELECT "Hoteis".nome, "Hoteis".diaria FROM "Hoteis"
                             JOIN "Cidades" ON "Hoteis".cidade_id = "Cidades".id
-                            WHERE "Cidades".nome = $1;`;
+                            WHERE "Cidades".nome ILIKE $1;`;
     const hoteis = await db.query(selectHoteis, [nome]);
 
     const selectPassagens = `SELECT 	"Companhia".nome AS "Companhia",
@@ -28,7 +28,7 @@ async function getCidades(nome){
                             WHERE "Cidades".nome != $1
                                 AND ("Cidades".id = "Rotas".origem) 
                                 AND ("Rotas".destino = (SELECT "Cidades".id FROM "Cidades" 
-                                                        WHERE "Cidades".nome = $1 )
+                                                        WHERE "Cidades".nome ILIKE $1 )
                                     )`;
     const passagens = await db.query(selectPassagens, [nome]);
 

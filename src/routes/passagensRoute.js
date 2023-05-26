@@ -5,8 +5,8 @@ const ticket = express();
 ticket.use(cors());
 ticket.use(express.json());
 
-import { Exibir } from '../controllers/passagensController.js';
+import { getPassagemCidade } from '../controllers/passagensController.js';
 
-ticket.get('/passagens', Exibir);
+ticket.get('/passagens/:cidade', getPassagemCidade);
 
 export default ticket;

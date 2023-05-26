@@ -1,9 +1,9 @@
 import { getPassagens } from "../repositories/passagensRepository.js";
 
-async function Exibir(req, res){
-    const {nome} = req.body;
+async function getPassagemCidade(req, res){
+    const {cidade} = req.params;
     try{
-        const passagens = await getPassagens(nome);
+        const passagens = await getPassagens(cidade);
         res.status(200).send(passagens);
     }catch(error){
         res.status(500).send(error.message);
@@ -11,5 +11,5 @@ async function Exibir(req, res){
 }
 
 export{ 
-    Exibir
+    getPassagemCidade
 }
