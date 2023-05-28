@@ -21,18 +21,19 @@ async function getCidades(){
 // Busca Hospedagens e Passagens para a cidade selecionada
 async function getAll(nome){
 
-    const selectHoteis =   `SELECT "Hoteis".nome, "Hoteis".diaria FROM "Hoteis"
+    const selectHoteis =   `SELECT "Hoteis".id, "Hoteis".nome, "Hoteis".diaria FROM "Hoteis"
                             JOIN "Cidades" ON "Hoteis".cidade_id = "Cidades".id
                             WHERE "Cidades".nome ILIKE $1;`;
     const hoteis = await db.query(selectHoteis, [nome]);
 
     const selectPassagens = `SELECT 	"Companhia".nome AS "Companhia",
+                                "Passagens".id,
                                 "Passagens".data_saida AS "Data_de_saida",
-                                "Passagens".hora_saida AS "Horário_de_saida",
+                                "Passagens".hora_saida AS "Hora_saida",
                                 "Passagens".data_chegada AS "Data_de_chegada",
-                                "Passagens".hora_chegada AS "Horário_previsto_de_chegada",
-                                "Passagens".valor AS "Preço_por_passagem",
-                                "Cidades".nome AS "Local_de_Partida"
+                                "Passagens".hora_chegada AS "Hora_prevista_chegada",
+                                "Passagens".valor AS "Preco_passagem",
+                                "Cidades".nome AS "Local_Partida"
                             FROM "Cidades", "Rotas"
                             JOIN "Passagens" ON "Rotas".id = "Passagens".rota_id
                             JOIN "Companhia" ON "Passagens".companhia_id = "Companhia".id

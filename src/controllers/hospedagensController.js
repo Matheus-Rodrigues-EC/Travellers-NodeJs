@@ -1,9 +1,10 @@
 import { getHotel, getHoteis } from "../repositories/hoteisRepository.js";
 
 async function getHotelNome(req, res){
-    const {nome} = req.body;
+    const {id} = req.params;
+
     try{
-        const hoteis = await getHotel(nome);
+        const hoteis = await getHotel(id);
         res.status(200).send(hoteis);
     }catch(error){
         res.status(500).send(error.message);

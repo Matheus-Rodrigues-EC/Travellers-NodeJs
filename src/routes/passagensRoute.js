@@ -8,7 +8,7 @@ ticket.use(express.json());
 import { getPassagemCidade, getPassagem } from '../controllers/passagensController.js';
 
 ticket.get('/passagens/:cidade', getPassagemCidade);
-ticket.get('/passagens/:cidade/:id', getPassagem);
+ticket.get('/passagem/:id', getPassagem);
 
 
 export default ticket;

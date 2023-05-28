@@ -7,7 +7,7 @@ host.use(express.json());
 
 import { getHotelNome, getHoteisCidade } from '../controllers/hospedagensController.js';
 
-host.get('/hoteis', getHotelNome);
+host.get('/hotel/:id', getHotelNome);
 host.get('/hoteis/:cidade', getHoteisCidade);
 
 export default host;

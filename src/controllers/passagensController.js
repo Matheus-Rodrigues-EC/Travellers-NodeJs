@@ -11,7 +11,7 @@ async function getPassagemCidade(req, res){
 }
 
 async function getPassagem(req, res){
-    const {cidade, id} = req.params;
+    const {id, cidade} = req.headers;
     try{
         const passagem = await getPassagemId(id, cidade);
         res.status(200).send(passagem);
