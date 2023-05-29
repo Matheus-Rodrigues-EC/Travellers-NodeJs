@@ -42,9 +42,21 @@ async function getHoteis(cidade){
     return hoteis.rows;
 }
 
+async function ListHoteis(){
+
+    const selectHoteis =   `SELECT "Cidades".nome as "Cidade", 
+                            "Hoteis".nome as "Hotel"
+                            FROM "Cidades", "Hoteis"
+                            WHERE "Cidades".id = "Hoteis".cidade_id;`
+    const hoteis = await db.query(selectHoteis);
+
+    return hoteis.rows;
+}
+
 
 export {
     createHoteis,
     getHotel,
+    ListHoteis,
     getHoteis
 }

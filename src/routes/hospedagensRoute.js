@@ -5,8 +5,9 @@ const host = express();
 host.use(cors());
 host.use(express.json());
 
-import { getHotelNome, getHoteisCidade } from '../controllers/hospedagensController.js';
+import { getHoteislist, getHotelNome, getHoteisCidade } from '../controllers/hospedagensController.js';
 
+host.get('/hoteis', getHoteislist);
 host.get('/hotel/:id', getHotelNome);
 host.get('/hoteis/:cidade', getHoteisCidade);
 

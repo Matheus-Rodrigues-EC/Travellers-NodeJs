@@ -1,4 +1,4 @@
-import { getHotel, getHoteis } from "../repositories/hoteisRepository.js";
+import { getHotel, getHoteis, ListHoteis } from "../repositories/hoteisRepository.js";
 
 async function getHotelNome(req, res){
     const {id} = req.params;
@@ -21,8 +21,18 @@ async function getHoteisCidade(req, res){
     }
 }
 
+async function getHoteislist(req, res){
+    try{
+        const hoteis = await ListHoteis();
+        res.status(200).send(hoteis);
+    }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+
 
 export {
     getHotelNome,
-    getHoteisCidade
+    getHoteisCidade,
+    getHoteislist
 }

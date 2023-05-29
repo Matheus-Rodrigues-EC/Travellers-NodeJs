@@ -9,6 +9,29 @@ async function createPassagem(rota_id, companhia_id, data_saida, hora_saida, dat
     return rows[0];
 }
 
+async function getPassagensList(){
+
+    const selectList = `SELECT DISTINCT "Cidades".nome FROM "Cidades"
+                        JOIN "Rotas" ON "Cidades".id = "Rotas".destino;
+    `;
+    const { rows } = await db.query(selectList);
+
+    return rows;
+}
+
+async function getPassagenscidade(cidade){
+
+    const selectList = `SELECT "Passagens".*, "Cidades".nome FROM "Passagens"
+                        JOIN "Rotas" ON "Passagens".rota_id = "Rotas".id
+                        JOIN "Cidades" ON "Rotas".origem = "Cidades".id
+                        WHERE "Rotas".destino = (
+                            SELECT id FROM "Cidades"
+                            WHERE nome ilike $1);`;
+    const { rows } = await db.query(selectList, [cidade]);
+
+    return rows;
+}
+
 async function getPassagens(cidade){
 
     const select = `SELECT 	"Companhia".nome AS "Companhia",
@@ -65,6 +88,8 @@ async function getPassagemId(id, cidade){
 
 export {
     createPassagem,
+    getPassagensList,
+    getPassagenscidade,
     getPassagens,
     getPassagemId
 }
